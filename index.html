@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Humidité</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&family=Roboto+Mono&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #3c405b;
+            color: #fff;
+            text-align:center;
+            font-family: 'Raleway', sans-serif;
+        }
+        .example-table {
+            table-layout: fixed;
+            font-family: sans-serif;
+            -webkit-font-smoothing: antialiased;
+            margin:auto;
+        }
+        .example-table th {
+            background-color: #787da0;
+            font-weight: normal;
+            color: white;
+            width:40px;
+            text-align: center;
+        }
+        .example-table td {
+            width:40px;
+            color: #fff;
+        }
+        .less10 { background-color: #578eb7; }
+        .less30 { background-color: #489f89; }
+        .less50 { background-color: #6bcbaa; }
+        .less70 { background-color: #fedba1; }
+        .less80 { background-color: #fdbe71; }
+        .less90 { background-color: #fd8f50; }
+        .less100 { background-color: #fe676c; }
+        .more100 { background-color: #c73864; }
+    </style>
+</head>
+<body>
+    <h1>Correspondance de l'humidité relative de l'air en fonction de la concentration et de la température</h1>
+
+    <script>
+        // Liste des tepératures à afficher
+        var listTemp = [];
+        for(let i=0; i<50; i++) {
+            listTemp.push(10+(i/2));
+        }
+
+        // Liste des concentrations à afficher
+        var listConcentrations = [];
+        for(let i=0; i<30; i++) {
+            listConcentrations.push(15.5-(i/2));
+        }
+
+        // Creation du tableau
+        var tableDiv = document.createElement('table');
+        tableDiv.classList.add('example-table');
+        var tbodyDiv = document.createElement('tbody');
+        tableDiv.appendChild(tbodyDiv);
+
+        // Creation des headers du tableau
+        var trow = document.createElement('tr');
+        var th = document.createElement('th');
+        th.innerText = 'C (g/m3) / T (°C)';
+        th.style.fontSize = '9px';
+        trow.appendChild(th);
+        for (const temp of listTemp) {
+            var th = document.createElement('th');
+            th.innerText = temp;
+            trow.appendChild(th);
+        }
+        tbodyDiv.appendChild(trow);
+
+        // Creation des lignes / colonnes du tableau
+        for (const concentration of listConcentrations) {
+            var trow = document.createElement('tr');
+            var th = document.createElement('th');
+            th.innerText = concentration;
+            trow.appendChild(th);
+            for (const temp of listTemp) {
+                var td = createCellule(temp, concentration);
+
+                trow.appendChild(td);
+            }
+            tbodyDiv.appendChild(trow);
+        }
+
+        // Creation d'une cellule
+        function createCellule(temp, concentration) {
+            var td = document.createElement('td');
+
+            var humiditeRelative = Math.round(getHumiditeRelativeFromTempAndConcentration(temp, concentration));
+
+            if(humiditeRelative > 100) {
+                humiditeRelative = 100;
+            }
+
+            if(humiditeRelative <= 10) { td.classList.add('less10'); }
+            else if(humiditeRelative <= 30) { td.classList.add('less30'); }
+            else if(humiditeRelative <= 50) { td.classList.add('less50'); }
+            else if(humiditeRelative < 70) { td.classList.add('less70'); }
+            else if(humiditeRelative < 80) { td.classList.add('less80'); }
+            else if(humiditeRelative < 90) { td.classList.add('less90'); }
+            else if(humiditeRelative < 100) { td.classList.add('less100'); }
+            else if(humiditeRelative >= 100) { td.classList.add('more100'); }
+
+            td.innerText = humiditeRelative;
+
+            if(temp==20) {
+                td.style.borderColor = 'red';
+                td.style.border = '2px solid #fff7e9';
+            }
+
+            return td;
+        }
+
+        // Calculs
+        function getHumiditeRelativeFromTempAndConcentration(temp, concentration) {
+            var pression = 1013.25;
+
+            var Ph2o = (concentration*pression)/( ((pression*100)/(8.3144*(temp+273.15)))*18.0153 );
+            var Etemp = 6.107799961 + temp*( (4.436518521/10) + temp*( (1.428945805/100) + temp*( (2.650648471/10000) + temp*( (3.031240396/1000000) + temp*( (2.034080948/100000000) + temp*( (6.136820929/100000000000) ) ) ) ) ) );
+            var HR = (Ph2o / Etemp)*100;
+
+            return HR;
+        }
+
+        // Ajout du tableau au body
+        document.body.appendChild(tableDiv);
+    </script>
+    
+</body>
+</html>
