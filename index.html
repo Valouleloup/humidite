@@ -17,6 +17,10 @@
             -webkit-font-smoothing: antialiased;
             margin:auto;
         }
+        .example-table tr {
+            font-size:10px;
+            font-weight: 600;
+        }
         .example-table th {
             background-color: #787da0;
             font-weight: normal;
@@ -28,14 +32,14 @@
             width:40px;
             color: #fff;
         }
-        .less10 { background-color: #578eb7; }
-        .less30 { background-color: #489f89; }
-        .less50 { background-color: #6bcbaa; }
-        .less70 { background-color: #fedba1; }
-        .less80 { background-color: #fdbe71; }
-        .less90 { background-color: #fd8f50; }
-        .less100 { background-color: #fe676c; }
-        .more100 { background-color: #c73864; }
+        .less10 { background-color: #c73864; }
+        .less20 { background-color: #fe676c; }
+        .less30 { background-color: #fd8f50; }
+        .less50 { background-color: #fdbe71; }
+        .less60 { background-color: #fedba1; color: #86704c !important}
+        .less80 { background-color: #6bcbaa; }
+        .less100 { background-color: #489f89; }
+        .more100 { background-color: #578eb7; color:#edf9ff !important }
     </style>
 </head>
 <body>
@@ -44,14 +48,14 @@
     <script>
         // Liste des tepératures à afficher
         var listTemp = [];
-        for(let i=0; i<50; i++) {
-            listTemp.push(10+(i/2));
+        for(let i=0; i<40; i++) {
+            listTemp.push(i);
         }
 
         // Liste des concentrations à afficher
         var listConcentrations = [];
-        for(let i=0; i<30; i++) {
-            listConcentrations.push(15.5-(i/2));
+        for(let i=0; i<40; i++) {
+            listConcentrations.push(22-(i/2));
         }
 
         // Creation du tableau
@@ -98,11 +102,11 @@
             }
 
             if(humiditeRelative <= 10) { td.classList.add('less10'); }
+            else if(humiditeRelative <= 20) { td.classList.add('less20'); }
             else if(humiditeRelative <= 30) { td.classList.add('less30'); }
-            else if(humiditeRelative <= 50) { td.classList.add('less50'); }
-            else if(humiditeRelative < 70) { td.classList.add('less70'); }
+            else if(humiditeRelative < 50) { td.classList.add('less50'); }
+            else if(humiditeRelative < 60) { td.classList.add('less60'); }
             else if(humiditeRelative < 80) { td.classList.add('less80'); }
-            else if(humiditeRelative < 90) { td.classList.add('less90'); }
             else if(humiditeRelative < 100) { td.classList.add('less100'); }
             else if(humiditeRelative >= 100) { td.classList.add('more100'); }
 
